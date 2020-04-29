@@ -15,7 +15,8 @@ typedef struct {
 void cargar(Tarea *Pendientes, int n);
 void realizadas(Tarea *Pendientes, Tarea *Realizadas, int n);
 void mostrarRealizadas(Tarea *Realizadas,int n);
-void mostar(Tarea R);
+Tarea BuscarID(Tarea *Realizadas, int n);
+void resultadoID(Tarea BuscarID);
 
 int main()
 {	int n;
@@ -27,10 +28,15 @@ int main()
 	fflush(stdin);
 	Tarea *TareasPendientes=(Tarea*)malloc(sizeof(Tarea)* n); 
 	Tarea *TareasRealizadas=(Tarea*)malloc(sizeof(Tarea)* n); 
+	Tarea BuscaID;
 
 	cargar(TareasPendientes,n);
 	realizadas(TareasPendientes, TareasRealizadas, n);
 	mostrarRealizadas(TareasRealizadas, n);
+
+	BuscaID=BuscarID(TareasRealizadas,n);
+	resultadoID(BuscaID);
+
 	getchar();
 	return 0;
 }
@@ -61,9 +67,8 @@ void realizadas(Tarea *Pendientes, Tarea *Realizadas, int n){
 
 	for (j = 0 ; j < n; j++){
 
-		printf("Valor de n %i \n",n );
-		printf("Valor de j %i \n",j );
-		printf("TareaID: %i \n",Pendientes->TareaID);
+		
+		printf("\n\nTareaID: %i \n",Pendientes->TareaID);
 		printf("Duracion: %i \n",Pendientes->Duracion);
 		printf("Descripcion: %s \n",Pendientes->Descripcion);
 		
@@ -76,7 +81,7 @@ void realizadas(Tarea *Pendientes, Tarea *Realizadas, int n){
 		
 		if (key==0)
 		{
-			Pendientes->TareaID = 0; 			
+			Pendientes->Duracion = 0; 			
 		}	
 		
 
@@ -94,13 +99,55 @@ void mostrarRealizadas(Tarea *Realizadas,int n){
 
 	for (int i = 0; i < n; i++)
 	{
-		if (Realizadas[i].TareaID != 0)
+		if (Realizadas[i].Duracion != 0)
 			{				
 				printf("TareaID: %i\n",Realizadas[i].TareaID);
 				printf("Duracion: %i\n",Realizadas[i].Duracion);
 				printf("Descripcion: %s\n",Realizadas[i].Descripcion);
 			}	
 	}
+	
+	puts("COMO QUEDA EL ARREGLO DE Realizadas");
 
+	for (int j = 0; j < n; j++)
+	{
+		printf("\n\nTareaID: %i\n",Realizadas[j].TareaID);
+		printf("Duracion: %i\n",Realizadas[j].Duracion);
+		printf("Descripcion: %s\n",Realizadas[j].Descripcion);
+	}
 }
 
+Tarea BuscarID(Tarea *Realizadas, int n){
+	int key;
+	puts("Ingrese el ID a Buscar: ");
+	scanf("%i",&key);
+	fflush(stdin);
+
+	for (int i = 0; i < n; i++)
+	{
+			if (Realizadas[i].TareaID==key)
+			{
+				return Realizadas[i];
+				break; 
+				
+			}
+	}
+	
+	Tarea noMatch;
+	noMatch.Duracion=0;
+	return noMatch;
+}
+
+void resultadoID(Tarea BuscaID){
+	
+	if (BuscaID.Duracion!=0)
+		{	
+			puts("Tarea Encontrada!\n");
+			printf("TareaID: %i\n",BuscaID.TareaID);
+			printf("Duracion: %i\n",BuscaID.Duracion);
+			printf("Descripcion: %s\n",BuscaID.Descripcion);
+
+		}else{
+			puts("Tarea NO Encontrada!\n");
+		}
+}
